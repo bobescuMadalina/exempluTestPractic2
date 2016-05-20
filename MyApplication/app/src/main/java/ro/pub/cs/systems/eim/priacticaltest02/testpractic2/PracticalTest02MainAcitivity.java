@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,9 @@ public class PracticalTest02MainAcitivity extends AppCompatActivity {
     Button connectButton;
     TextView textViewResult;
     Button connectClient;
+    EditText address;
+    EditText city;
+    EditText port;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class PracticalTest02MainAcitivity extends AppCompatActivity {
 
         textViewResult = (TextView) findViewById(R.id.text_view_result);
         connectClient = (Button) findViewById(R.id.connect_client_button);
+        connectClient.setOnClickListener(new GetWeatherForecastButtonClickListener());
     }
 
     @Override
@@ -291,7 +296,7 @@ public class PracticalTest02MainAcitivity extends AppCompatActivity {
     private class ConnectButtonClickListener implements Button.OnClickListener {
         @Override
         public void onClick(View view) {
-            String serverPort = "2010";
+            String serverPort = "5000";
             if (serverPort == null || serverPort.isEmpty()) {
                 Toast.makeText(
                         getApplicationContext(),
@@ -329,10 +334,11 @@ public class PracticalTest02MainAcitivity extends AppCompatActivity {
 
 
     private class GetWeatherForecastButtonClickListener implements Button.OnClickListener {
+        ClientThread clientThread;
         @Override
         public void onClick(View view) {
-            /*String clientAddress = clientAddressEditText.getText().toString();
-            String clientPort    = clientPortEditText.getText().toString();
+            String clientAddress = "localhost";
+            String clientPort    = "5000";
             if (clientAddress == null || clientAddress.isEmpty() ||
                     clientPort == null || clientPort.isEmpty()) {
                 Toast.makeText(
@@ -343,11 +349,11 @@ public class PracticalTest02MainAcitivity extends AppCompatActivity {
                 return;
             }
             if (serverThread == null || !serverThread.isAlive()) {
-                Log.e(Constants.TAG, "[MAIN ACTIVITY] There is no server to connect to!");
+                Log.e("APP_TAG", "[MAIN ACTIVITY] There is no server to connect to!");
                 return;
             }
-            String city = cityEditText.getText().toString();
-            String informationType = informationTypeSpinner.getSelectedItem().toString();
+            String city = "BUCURESTI";
+            String informationType = "temperatura";
             if (city == null || city.isEmpty() ||
                     informationType == null || informationType.isEmpty()) {
                 Toast.makeText(
@@ -357,14 +363,13 @@ public class PracticalTest02MainAcitivity extends AppCompatActivity {
                 ).show();
                 return;
             }
-            weatherForecastTextView.setText(Constants.EMPTY_STRING);
+            textViewResult.setText("");
             clientThread = new ClientThread(
                     clientAddress,
                     Integer.parseInt(clientPort),
                     city,
-                    informationType,
-                    weatherForecastTextView);
-            clientThread.start();*/
+                    informationType);
+            clientThread.start();
         }
     }
 }
